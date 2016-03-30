@@ -21,6 +21,7 @@ export default class StructureAnimation extends Component {
     }
   }
 
+
   componentDidMount() {
     // This fires on initial load and when I toggle between the structure and Git animations.
     // For some reason, after I toggle, every time I run a command or toggle again, I see an error message in the console about setting state for an unmounted component:
@@ -31,6 +32,7 @@ export default class StructureAnimation extends Component {
     ipcRenderer.on('direc-schema', (e,arg)=>{
       this.updateTree(arg);
     });
+
   }
 
   updateTree(newSchema) {
