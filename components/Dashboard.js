@@ -119,7 +119,9 @@ export default class Dashboard extends Component {
 
 	componentDidMount() {
 		// console.log('Document:', document.getElementById('#Terminal'));
-		console.log('Position of Terminal:', getPosition(document.getElementById('Terminal'))); // This seems to work - thank God!
+		var terminal = document.getElementById('Terminal');
+		console.log('Position of Terminal:', getPosition(terminal)); // This seems to work - thank God!
+		console.log(terminal.getBoundingClientRect()); // Does this?
 	}
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
