@@ -5,6 +5,7 @@ import Animation from './Animation';
 import Lesson from './Lesson';
 import Sidebar from './Sidebar';
 import Terminal from './Terminal';
+import Tour from './Tour';
 // Import lesson content
 import {lesson1} from './../lessons/git-on-your-computer';
 // Import helper function
@@ -34,7 +35,9 @@ export default class Dashboard extends Component {
 			errorMessage: undefined,
 			sidebarVisible: props.initialSidebarVisible,
 			lessonVisible: props.initialLessonVisible,
-			structureAnimationVisible: props.initialStructureAnimationVisible
+			structureAnimationVisible: props.initialStructureAnimationVisible,
+			tourPosition: props.initialTourPosition,
+			tourVisible: props.initialTourVisible
 		};
 	}
 
@@ -117,12 +120,20 @@ export default class Dashboard extends Component {
 		})
 	}
 
-	componentDidMount() {
-		// console.log('Document:', document.getElementById('#Terminal'));
-		var terminal = document.getElementById('Terminal');
-		console.log('Position of Terminal:', getPosition(terminal)); // This seems to work - thank God!
-		console.log(terminal.getBoundingClientRect()); // Does this?
+	advanceTour() {
+		// Note from Isaac: For now, I've hard-coded this condition, but I'd prefer to update it dynamically.
+		var nextPosition = this.state.tourPosition < 3 ? this.state.tourPosition + 1 : 1;
+		this.setState({
+			tourPosition: nextPosition
+		});
 	}
+
+	hideTour() {
+		this.setState({
+			tourVisible: false
+		})
+	}
+
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
 		var sidebarStyle = {padding: '8px'};
@@ -165,9 +176,12 @@ export default class Dashboard extends Component {
 			}
 		});
 
+		var tour = this.state.tourVisible ? <Tour tourPosition={this.state.tourPosition} advance={this.advanceTour.bind(this)} hide={this.hideTour.bind(this)}/> : undefined;
+
 		// The image is from https://www.iconfinder.com/icons/134216/hamburger_lines_menu_icon#size=32
     return (
       <div id='Dashboard' style={{height: '100%', width: '100%'}}>
+				{tour}
 				<div id='sidebar-container' style={sidebarContainerStyle}>
 					<img src='assets/setting-icon.png' onClick={this.toggleSidebar.bind(this)} height='12px' width='12px' style={{padding: '8px'}}/>
 					<Sidebar style={sidebarStyle} showLesson={this.showLesson.bind(this)} lessonInfo={lessonInfo} lessonNumber={this.state.lessonNumber} lessonVisible={this.state.lessonVisible} />
@@ -197,7 +211,9 @@ export default class Dashboard extends Component {
 Dashboard.defaultProps = {
 	initialSidebarVisible: true,
 	initialLessonVisible: false,
-	initialStructureAnimationVisible: true
+	initialStructureAnimationVisible: true,
+	initialTourPosition: 0,
+	initialTourVisible: true
 };
 
 render(<Dashboard />, document.getElementById('dashboard-container'));
