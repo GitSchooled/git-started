@@ -7,6 +7,8 @@ import Sidebar from './Sidebar';
 import Terminal from './Terminal';
 // Import lesson content
 import {lesson1} from './../lessons/git-on-your-computer';
+// Import helper function
+import getPosition from './../utils/get-position'
 
 // As we create new lessons, we can add new objects to the lessons array.
 var lessons = [
@@ -115,6 +117,10 @@ export default class Dashboard extends Component {
 		})
 	}
 
+	componentDidMount() {
+		// console.log('Document:', document.getElementById('#Terminal'));
+		console.log('Position of Terminal:', getPosition(document.getElementById('Terminal'))); // This seems to work - thank God!
+	}
   // Isaac: I'm not sure whether the button and the handleClick function should live on Dashboard or on Lesson.
   render() {
 		var sidebarStyle = {padding: '8px'};
